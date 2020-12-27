@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pin Generator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="pin-generator half-width">
+                    <input id="random-number" class="form-control" type="text">
+                    <button id="generate-btn">Generate Pin</button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-section half-width">
+                    <input id="number-show" class="form-control" type="text">
+                    <div class="numbers">
+                        <div class="calc-body">
+                              <div class="calc-button-row">
+                              <div class="button">7</div>
+                              <div class="button">8</div>
+                              <div class="button">9</div>
+                            </div>
+                            <div class="calc-button-row">
+                              <div class="button">4</div>
+                              <div class="button">5</div>
+                              <div class="button">6</div>
+                            </div>
+                            <div class="calc-button-row">
+                              <div class="button">1</div>
+                              <div class="button">2</div>
+                              <div class="button">3</div>
+                            </div>
+                            <div class="calc-button-row">
+                                <div class="button"><</div>
+                                <div class="button">0</div>
+                                <div class="button">C</div>
+                            </div>
+                            <div>
+                                <button id='submit-btn' type="submit" class="submit-btn">Submit</button>
+                                <p class="action-left"> <span id="try-left">3</span> try left</p>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="notify-section">
+            <p id="unsuccessfull" class="notify">❌ Pin Didn't Match, Please try again</p>
+            <p id="successfull" class="notify">✅ Pin Matched... Secret door is opening for you</p>
+        </div>
+    </div>
+    <script>
+        document.getElementById('generate-btn').addEventListener('click',function(){
+             var rand=document.getElementById('random-number');
+             var randomNumber=Math.round(Math.random(rand)*8999)+1000;
+             rand.value=randomNumber;
+             document.getElementById('successfull').style.display='none';
+             document.getElementById('unsuccessfull').style.display='none';
+             document.getElementById('number-show').value='';
+            
+        })
+
+            var buttons= document.getElementsByClassName('button');
+            for (let i = 0; i < buttons.length; i++) {
+                var button = buttons[i];
+                button.addEventListener('click',function(event){
+                    var clickButton=event.target;
+                    if(clickButton.innerText == 'C'){
+                        var showNumber=document.getElementById('number-show');
+                        showNumber.value='';
+                    }
+                    else if(clickButton.innerText=='<'){
+                        var showNumber=document.getElementById('number-show').value;
+                        var newShowNumber=showNumber.slice(0,-1);
+                        document.getElementById('number-show').value=newShowNumber;
+                    }
+                    else{
+                        var showNumber=document.getElementById('number-show');
+                        var clickButton=event.target;
+                        showNumber.value=showNumber.value+clickButton.innerText;
+                    }
+                         
+                   
+                    
+                   
+                })   
+            }
+
+          var submitbutton=document.getElementById('submit-btn');
+          submitbutton.addEventListener('click',function(){
+            var finalRandom=document.getElementById('random-number').value;
+                 var finalShowing= document.getElementById('number-show').value;
+                 if (finalRandom === "" && finalShowing === "") {
+                 alert('Please Generate Pin first then Submit it to Pin entry field');
+                  }
+                else if(finalShowing==''){
+                     alert('please enter some number in submit area')
+                 }
+                else if(finalRandom==finalShowing){
+                    var successfull=document.getElementById('successfull');
+                    successfull.style.display='block';
+                    document.getElementById('number-show').value='';
+                   
+                        var unsuccessfull=document.getElementById('unsuccessfull');
+                        unsuccessfull.style.display='none';
+                   
+                   
+                    
+                    
+                }
+                else if(finalRandom!=finalShowing){
+                    var unsuccessfull=document.getElementById('unsuccessfull');
+                    unsuccessfull.style.display='block';
+                    var tryLeft=document.getElementById('try-left').innerText;
+                    parsingTryLeft=parseInt(tryLeft);
+                    parsingTryLeft--;
+                    document.getElementById('try-left').innerText=parsingTryLeft;
+                    if(parsingTryLeft=='0'){
+                        submitbutton.disabled=true;
+                        submitbutton.style.backgroundColor='red';
+                        
+                       
+
+                    }
+
+                    
+                   
+                    
+                    
+
+                 } 
+          })
+              
+
+
+
+    </script>
+</body>
+</html>
